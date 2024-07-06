@@ -47,21 +47,31 @@ const uint16_t PROGMEM encoder_map[][1][2] = {
 };
 #endif // ENCODER_MAP_ENABLE
 
+bool rapid_fire = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case MC_0:
             if (record->event.pressed) {
-                SEND_STRING("TEST MACRO PRESS");
-            }
-            else {
-                SEND_STRING("TEST MACRO RELEASED");
+                rapid_fire = !rapid_fire;
             }
             break;
     }
     if (!process_record_lemokey_common(keycode, record)) {
         return false;
     }
+    else {
+
+    }
 
     return true;
+}
+
+void matrix_scan_user(void) {
+    if (rapid_fire) {
+        tap_code(KC_MS_BTN1);
+    }
+    else {
+
+    }
 }
